@@ -72,11 +72,11 @@ const PaginaInicial = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
             <div className="space-y-6">
               <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: 'var(--cinza-escuro)' }}>
-                Sobre o <span style={{ color: 'var(--roxo-vibrante)' }}>MindTrack</span>
+                Sobre o <span style={{ color: 'var(--roxo-vibrante)' }}>Neuron</span>
               </h2>
               <div className="space-y-4 text-gray-600 leading-relaxed">
                 <p>
-                  MindTrack é uma plataforma web voltada para o monitoramento e promoção do bem-estar emocional de colaboradores em ambientes corporativos.
+                  Neuron é uma plataforma web voltada para o monitoramento e promoção do bem-estar emocional de colaboradores em ambientes corporativos.
                 </p>
                 <p>
                   Em um cenário de transformações no mercado de trabalho, com modelos híbridos e maior pressão por produtividade, o <strong>equilíbrio emocional</strong> tornou-se essencial para o desempenho e a saúde das equipes.
@@ -110,14 +110,14 @@ const PaginaInicial = () => {
           </div>
           <div className="max-w-4xl mx-auto text-center">
             <p className="text-xl md:text-2xl font-semibold mb-8 leading-relaxed">
-              MindTrack representa o futuro do trabalho com foco no ser humano.
+              Neuron representa o futuro do trabalho com foco no ser humano.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-lg leading-relaxed">
               <p>
                 Mais do que medir produtividade, ele ajuda a cuidar das pessoas, criando ambientes corporativos mais inclusivos, empáticos e sustentáveis.
               </p>
               <p>
-                Em um mundo onde as tecnologias estão em todos os lugares, o MindTrack mostra que o lado humano ainda é o que move o futuro.
+                Em um mundo onde as tecnologias estão em todos os lugares, o Neuron mostra que o lado humano ainda é o que move o futuro.
               </p>
             </div>
           </div>
