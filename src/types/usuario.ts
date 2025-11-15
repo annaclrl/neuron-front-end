@@ -3,6 +3,8 @@ export type TipoUsuario = 'RH' | 'GESTOR' | 'FUNCIONARIO';
 export type DadosPessoais = {
   nome: string;
   email: string;
+  departamento : string; 
+  status: string;
 };
 
 export type DadosLogin = {
