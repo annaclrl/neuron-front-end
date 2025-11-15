@@ -44,7 +44,7 @@ export const dicasEmocao: DicaEmocao[] = [
 ];
 
 
-const mockRespostas: RespostaHumor[] = [
+export const mockRespostas: RespostaHumor[] = [
   { data: "2025-11-08", emocao: "Feliz", intensidade: 0.9 },
   { data: "2025-11-09", emocao: "Cansado", intensidade: 0.4 },
   { data: "2025-11-10", emocao: "Estressado", intensidade: 0.7 },
