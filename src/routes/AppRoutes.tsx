@@ -11,15 +11,16 @@ import FormularioHumor from "../pages/FormularioEmocao";
 import HistoricoEmocoes from "../pages/HistoricoEmocoes";
 import type { JSX } from "react";
 import DashboardRH from "../pages/DashboardRh";
+import DashboardGestor from "../pages/DashboardGestor";
 
 const ProtectedRoute = ({ children, tiposPermitidos }: { children: JSX.Element; tiposPermitidos: string[] }) => {
-  const usuario = JSON.parse(localStorage.getItem("usuario_logado") || "{}");
+    const usuario = JSON.parse(localStorage.getItem("usuario_logado") || "{}");
 
-  if (!usuario || !tiposPermitidos.includes(usuario.tipo)) {
-    return <Navigate to="/login" replace />;
-  }
+    if (!usuario || !tiposPermitidos.includes(usuario.tipo)) {
+        return <Navigate to="/login" replace />;
+    }
 
-  return children;
+    return children;
 };
 
 
@@ -47,19 +48,27 @@ export const routes = createBrowserRouter([
     },
     {
         path: '/',
-        element: <BarraLateral/>,
+        element: <BarraLateral />,
         children: [
-            { path: 'formulario', element: <FormularioHumor/>},
+            { path: 'formulario', element: <FormularioHumor /> },
             { path: "historico", element: <HistoricoEmocoes /> },
-            { path: 'dados-conta', element: <DadosConta/>},
+            { path: 'dados-conta', element: <DadosConta /> },
             {
                 path: 'dashboard-rh',
-                element:( 
+                element: (
                     <ProtectedRoute tiposPermitidos={["RH"]}>
                         <DashboardRH />
                     </ProtectedRoute>
-                ),       
-            }
-        ]
-    }
-])
+                ),
+            },
+            {
+                path: "dashboard-gestor",
+                element: (
+                    <ProtectedRoute tiposPermitidos={["GESTOR"]}>
+                        <DashboardGestor />
+                    </ProtectedRoute>
+                ),
+            },
+        ],
+    },
+]);
