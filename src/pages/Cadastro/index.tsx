@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import type { FormInputs } from '../../types/usuario';
+import type { CadastroForm } from '../../types/usuario';
 
 
 const Cadastro = () => {
@@ -10,13 +10,13 @@ const Cadastro = () => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<FormInputs>();
+  } = useForm<CadastroForm>();
 
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = async (data: FormInputs) => {
+  const onSubmit = async (data: CadastroForm) => {
     setIsLoading(true);
 
     const mapAcesso: Record<string, number> = {
