@@ -7,6 +7,7 @@ import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
 import BarraLateral from "../components/BarraLateral";
 import DadosConta from "../pages/DadosConta";
+import FormularioHumor from "../pages/FormularioEmocao";
 
 export const routes = createBrowserRouter([
     {
@@ -34,7 +35,8 @@ export const routes = createBrowserRouter([
         path: '/',
         element: <BarraLateral/>,
         children: [
-            { path: '/dados-conta', element: <DadosConta/>}
+            { path: 'formulario', element: <FormularioHumor/>},
+            { path: 'dados-conta', element: <DadosConta/>}
         ]
     }
 ])
