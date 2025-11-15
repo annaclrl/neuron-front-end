@@ -2,6 +2,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useTheme } from "../../context/ThemeContext"; 
 import type {Usuario} from '../../types/usuario';
+import { useNavigate } from 'react-router-dom';
 
 const DadosConta = () => {
   const { darkMode } = useTheme();
@@ -10,31 +11,34 @@ const DadosConta = () => {
   const [showDesativarModal, setShowDesativarModal] = useState(false);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<Usuario>();
+  const navigate = useNavigate();
 
   useEffect(() => {
-  try {
-    const userJSON = localStorage.getItem("mindtrack_usuario_logado");
+    try {
+      const userJSON = localStorage.getItem("usuario_logado");
 
-    if (userJSON) {
-      const user = JSON.parse(userJSON);
+      if (userJSON) {
+        const user = JSON.parse(userJSON);
 
-      const usuarioAtualizado: Usuario = {
-        nome: typeof user.nome === "string" ? user.nome : "",
-        email: typeof user.email === "string" ? user.email : "",
-        tipo: typeof user.tipo === "string" ? user.tipo : "FUNCIONARIO"
-      };
+        const usuarioAtualizado: Usuario = {
+          nome: typeof user.nome === "string" ? user.nome : "",
+          email: typeof user.email === "string" ? user.email : "",
+          tipo: typeof user.tipo === "string" ? user.tipo : "FUNCIONARIO"
+        };
 
-      setUsuarioLogado(usuarioAtualizado);
-      reset(usuarioAtualizado);
-    } else {
+        setUsuarioLogado(usuarioAtualizado);
+        reset(usuarioAtualizado);
+      } else {
+        setUsuarioLogado(null);
+        navigate('/login');
+      }
+
+    } catch (error) {
+      console.error("Erro ao carregar usuário do localStorage:", error);
       setUsuarioLogado(null);
+      navigate('/login');
     }
-
-  } catch (error) {
-    console.error("Erro ao carregar usuário do localStorage:", error);
-    setUsuarioLogado(null);
-  }
-}, [reset]);
+  }, [reset, navigate]);
 
   const onSubmit: SubmitHandler<Usuario> = (data) => {
     if (!usuarioLogado) return;
@@ -45,7 +49,7 @@ const DadosConta = () => {
       email: data.email
     };
 
-    localStorage.setItem("mindtrack_usuario_logado", JSON.stringify(atualizado));
+    localStorage.setItem("usuario_logado", JSON.stringify(atualizado));
     setUsuarioLogado(atualizado);
     setShowFormEdicao(false);
     alert("Dados atualizados com sucesso!");
@@ -57,8 +61,10 @@ const DadosConta = () => {
   };
 
   const handleDesativarConta = () => {
+    localStorage.removeItem('usuario_logado');
     alert("Conta desativada com sucesso!");
     setShowDesativarModal(false);
+    navigate('/login');
   };
 
   const getTipoUsuarioLabel = (tipo: string) => {
@@ -79,10 +85,10 @@ const DadosConta = () => {
       <div className={`min-h-screen bg-linear-to-br flex items-center justify-center transition-colors duration-300 ${
         darkMode 
           ? "from-gray-900 to-gray-800 text-white" 
-          : "from-(--cinza-claro) to-white text-gray-800"
+          : "from-(--cinza-cl to-white text-gray-800"
       }`}>
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-(--roxo-vibrante) mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-(--roxo-vibrante)] mx-auto mb-4"></div>
           <p className={darkMode ? "text-gray-400" : "text-gray-600"}>Carregando dados...</p>
         </div>
       </div>
@@ -93,7 +99,7 @@ const DadosConta = () => {
     <div className={`min-h-screen bg-linear-to-br py-8 px-4 sm:py-12 sm:px-6 transition-colors duration-300 ${
       darkMode 
         ? "from-gray-900 to-gray-800 text-white" 
-        : "from-(--cinza-claro) to-white text-gray-800"
+        : "from-(--cinza-claro)] to-white text-gray-800"
     }`}>
       <div className="max-w-2xl mx-auto">
 

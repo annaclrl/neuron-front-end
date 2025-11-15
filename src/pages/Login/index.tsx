@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import type { UsuarioComLogin } from '../../types/usuario';
 
@@ -17,37 +17,43 @@ const Login = () => {
     setIsLoading(true);
     setLoginError('');
 
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      await new Promise(resolve => setTimeout(resolve, 800));
 
-    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-    const usuario = usuarios.find((u: any) => u.email === data.email && u.senha === data.senha);
+      const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+      const usuario = usuarios.find((u: any) => u.email === data.email && u.senha === data.senha);
 
-    if (usuario) {
-      localStorage.setItem('usuario_logado', JSON.stringify({
-        ...usuario,
-        tipo: usuario.tipoUsuario
-      }));
+      if (usuario) {
+        const usuarioParaSalvar = {
+          ...usuario,
+          tipo: usuario.tipo || usuario.tipoUsuario || 'FUNCIONARIO'
+        };
 
-      switch (usuario.tipoUsuario) {
-        case 'RH':
-          navigate('/dashboard-rh');
-          break;
-        case 'GESTOR':
-          navigate('/dashboard-gestor');
-          break;
-        case 'FUNCIONARIO':
-          navigate('/formulario');
-          break;
-        default:
-          navigate('/login');
-          break;
+        localStorage.setItem('usuario_logado', JSON.stringify(usuarioParaSalvar));
+
+        switch (usuarioParaSalvar.tipo) {
+          case 'RH':
+            navigate('/dashboard-rh');
+            break;
+          case 'GESTOR':
+            navigate('/dashboard-gestor');
+            break;
+          case 'FUNCIONARIO':
+            navigate('/formulario');
+            break;
+          default:
+            navigate('/formulario');
+            break;
+        }
+      } else {
+        setLoginError('E-mail ou senha incorretos');
       }
-
-    } else {
-      setLoginError('E-mail ou senha incorretos');
+    } catch (error) {
+      console.error('Erro no login:', error);
+      setLoginError('Ocorreu um erro. Tente novamente.');
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   return (
@@ -75,7 +81,7 @@ const Login = () => {
             <input
               id="login-email"
               type="email"
-              className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-(--roxo-vibrante)focus:border-transparent transition-all duration-200 bg-white ${errors.email ? 'border-red-500 focus:ring-red-500' : ''
+              className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-(--roxo-vibrante) focus:border-transparent transition-all duration-200 bg-white ${errors.email ? 'border-red-500 focus:ring-red-500' : ''
                 }`}
               placeholder="seu@email.com"
               {...register('email', {
@@ -100,7 +106,7 @@ const Login = () => {
                 placeholder="Digite sua senha"
                 {...register('senha', { required: 'Senha é obrigatória' })}
               />
-              <button type="button" className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-(--roxo-vibrante) font-medium hover:text-(--roxo-escuro) transition-colors duration-200" onClick={() => setShowPassword(!showPassword)}>
+              <button type="button" className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-(--roxo-vibrante) font-medium hover:text-(--roxo-escuro)transition-colors duration-200" onClick={() => setShowPassword(!showPassword)}>
                 {showPassword ? 'Ocultar' : 'Mostrar'}
               </button>
             </div>
@@ -118,7 +124,7 @@ const Login = () => {
               <input type="checkbox" className="w-4 h-4 text-(--roxo-vibrante) border-gray-300 rounded focus:ring-(--roxo-vibrante)" />
               <span className="text-sm text-gray-700">Lembrar de mim</span>
             </label>
-            <p className="text-sm text-(--roxo-vibrante) hover:text-(--roxo-escuro) font-medium transition-colors duration-200 cursor-pointer">Esqueceu a senha?</p>
+            <p className="text-sm text-(--roxo-vibrante)] hover:text-(--roxo-escuro)] font-medium transition-colors duration-200 cursor-pointer">Esqueceu a senha?</p>
           </div>
 
           <button

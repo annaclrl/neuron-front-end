@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import type { CadastroForm } from '../../types/usuario';
 
-
 const Cadastro = () => {
   const {
     register,
@@ -19,41 +18,47 @@ const Cadastro = () => {
   const onSubmit = async (data: CadastroForm) => {
     setIsLoading(true);
 
-    const mapAcesso: Record<string, number> = {
-      FUNCIONARIO: 1,
-      GESTOR: 2,
-      RH: 3,
-    };
+    try {
+      const mapAcesso: Record<string, number> = {
+        FUNCIONARIO: 1,
+        GESTOR: 2,
+        RH: 3,
+      };
 
-    await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 800));
 
-    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-    const novoUsuario = {
-      id: Date.now(),
-      nome: data.nome,
-      email: data.email,
-      senha: data.senha,
-      tipo: data.tipoUsuario,
-      idAcesso: mapAcesso[data.tipoUsuario],
-      idDepartamento: Number(data.departamento),
-      status: data.status,
-      dataCadastro: new Date().toISOString(),
-    };
+      const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
 
-    usuarios.push(novoUsuario);
-    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+      // Padronizo o campo como "tipo" ao salvar
+      const novoUsuario = {
+        id: Date.now(),
+        nome: data.nome,
+        email: data.email,
+        senha: data.senha,
+        tipo: data.tipoUsuario, 
+        idAcesso: mapAcesso[data.tipoUsuario],
+        idDepartamento: Number(data.departamento),
+        status: data.status,
+        dataCadastro: new Date().toISOString(),
+      };
 
-    setIsLoading(false);
+      usuarios.push(novoUsuario);
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
 
-    navigate('/login', {
-      state: {
-        message: 'Cadastro realizado com sucesso! Faça login para continuar.'
-      }
-    });
+      navigate('/login', {
+        state: {
+          message: 'Cadastro realizado com sucesso! Faça login para continuar.'
+        }
+      });
+    } catch (error) {
+      console.error('Erro ao cadastrar:', error);
+      alert('Ocorreu um erro ao cadastrar. Tente novamente.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const password = watch('senha');
-
 
   return (
     <main className="min-h-screen flex" style={{ fontFamily: 'var(--fonte-principal)' }}>
@@ -76,7 +81,7 @@ const Cadastro = () => {
             <input
               id="nome"
               type="text"
-              className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-(--roxo-vibrante) focus:border-transparent transition-all duration-200 bg-white ${
+              className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-var(--roxo-vibrante) focus:border-transparent transition-all duration-200 bg-white ${
                 errors.nome ? 'border-red-500 focus:ring-red-500' : ''
               }`}
               placeholder="Digite seu nome completo"
@@ -178,7 +183,7 @@ const Cadastro = () => {
               })}
             >
               <option value="">Selecione o tipo de usuário</option>
-              <option value="RH">RH </option>
+              <option value="RH">RH</option>
               <option value="GESTOR">Gestor</option>
               <option value="FUNCIONARIO">Funcionário</option>
             </select>
