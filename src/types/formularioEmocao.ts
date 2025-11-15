@@ -16,3 +16,9 @@ export type DicaEmocao = {
   dica: string;
   cor: string;
 };
+
+export type RespostaHumor = {
+  data: string;
+  emocao: string;
+  intensidade: number;
+};

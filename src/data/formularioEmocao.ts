@@ -1,4 +1,4 @@
-import type { DicaEmocao } from "../types/formularioEmocao";
+import type { DicaEmocao, RespostaHumor } from "../types/formularioEmocao";
 
 export const emocaoOptions = [
   { id: 1, nome: "Feliz" },
@@ -41,4 +41,12 @@ export const dicasEmocao: DicaEmocao[] = [
     dica: "Tente focar no presente. Quebre tarefas grandes em etapas menores e respire.", 
     cor: "from-orange-400 to-orange-600" 
   },
+];
+
+
+const mockRespostas: RespostaHumor[] = [
+  { data: "2025-11-08", emocao: "Feliz", intensidade: 0.9 },
+  { data: "2025-11-09", emocao: "Cansado", intensidade: 0.4 },
+  { data: "2025-11-10", emocao: "Estressado", intensidade: 0.7 },
+  { data: "2025-11-11", emocao: "Neutro", intensidade: 0.5 },
 ];
