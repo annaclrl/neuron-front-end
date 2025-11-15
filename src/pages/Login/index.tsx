@@ -51,29 +51,32 @@ const Login = () => {
   };
 
   return (
-    <main>
-      <div>
-        <div>
-          <div>
-            <span>Neuron</span>
+    <main className="min-h-screen flex" style={{ fontFamily: 'var(--fonte-principal)' }}>
+      <div className="w-full lg:w-1/2 xl:w-2/5 flex flex-col justify-center px-6 py-12 lg:px-12 bg-white">
+        <div className="text-center mb-8">
+          <div className="mb-6">
+            <span className="text-2xl font-bold" style={{ color: 'var(--roxo-escuro)' }}>Neuron</span>
           </div>
-
-          <h1>Bem-vindo de volta</h1>
-          <p>Faça login para acessar sua conta e continuar cuidando do bem-estar emocional</p>
+          <h1 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: 'var(--cinza-escuro)' }}>Bem-vindo de volta</h1>
+          <p className="text-gray-600 text-lg">
+            Faça login para acessar sua conta e continuar cuidando do bem-estar emocional
+          </p>
         </div>
 
         {message && (
-          <div>
-            <div>{message}</div>
+          <div className="mb-6">
+            <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">{message}</div>
           </div>
         )}
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <label htmlFor="login-email">E-mail</label>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 max-w-md mx-auto w-full">
+          <div className="space-y-2">
+            <label htmlFor="login-email" className="block text-sm font-medium text-gray-700 mb-2">E-mail</label>
             <input
               id="login-email"
               type="email"
+              className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-(--roxo-vibrante)focus:border-transparent transition-all duration-200 bg-white ${errors.email ? 'border-red-500 focus:ring-red-500' : ''
+                }`}
               placeholder="seu@email.com"
               {...register('email', {
                 required: 'E-mail é obrigatório',
@@ -83,64 +86,70 @@ const Login = () => {
                 }
               })}
             />
-            {errors.email && <span>{errors.email.message}</span>}
+            {errors.email && <span className="text-red-600 text-sm font-medium block mt-1">{errors.email.message}</span>}
           </div>
 
-          <div>
-            <label htmlFor="login-senha">Senha</label>
-
-            <div>
+          <div className="space-y-2">
+            <label htmlFor="login-senha" className="block text-sm font-medium text-gray-700 mb-2">Senha</label>
+            <div className="relative">
               <input
                 id="login-senha"
                 type={showPassword ? 'text' : 'password'}
+                className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-(--roxo-vibrante) focus:border-transparent transition-all duration-200 bg-white ${errors.senha ? 'border-red-500 focus:ring-red-500' : ''
+                  }`}
                 placeholder="Digite sua senha"
                 {...register('senha', { required: 'Senha é obrigatória' })}
               />
-
-              <button type="button" onClick={() => setShowPassword(!showPassword)}>
+              <button type="button" className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-(--roxo-vibrante) font-medium hover:text-(--roxo-escuro) transition-colors duration-200" onClick={() => setShowPassword(!showPassword)}>
                 {showPassword ? 'Ocultar' : 'Mostrar'}
               </button>
             </div>
-
-            {errors.senha && <span>{errors.senha.message}</span>}
+            {errors.senha && <span className="text-red-600 text-sm font-medium block mt-1">{errors.senha.message}</span>}
           </div>
 
           {loginError && (
-            <div>
-              <span>{loginError}</span>
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+              <span className="text-red-700 text-sm font-medium">{loginError}</span>
             </div>
           )}
 
-          <div>
-            <label>
-              <input type="checkbox" />
-              <span>Lembrar de mim</span>
+          <div className="flex justify-between items-center">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" className="w-4 h-4 text-(--roxo-vibrante) border-gray-300 rounded focus:ring-(--roxo-vibrante)" />
+              <span className="text-sm text-gray-700">Lembrar de mim</span>
             </label>
-
-            <p>Esqueceu a senha?</p>
+            <p className="text-sm text-(--roxo-vibrante) hover:text-(--roxo-escuro) font-medium transition-colors duration-200 cursor-pointer">Esqueceu a senha?</p>
           </div>
 
-          <button type="submit" disabled={isLoading}>
+          <button
+            type="submit"
+            className={`w-full bg-(--roxo-vibrante) text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-[#8B5FFF] transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-3 ${isLoading ? 'opacity-80 cursor-not-allowed' : ''
+              }`}
+            disabled={isLoading}
+          >
             {isLoading ? (
-              <>Entrando...</>
+              <>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Entrando...
+              </>
             ) : (
               'Entrar'
             )}
           </button>
         </form>
 
-        <div>
-          <p>
+        <div className="text-center mt-8">
+          <p className="text-gray-600">
             Não tem uma conta?
-            <Link to="/cadastro">Criar conta</Link>
+            <Link to="/cadastro" className="text-(--roxo-vibrante) font-semibold hover:text-(--roxo-escuro) transition-colors duration-200 ml-1">Criar conta</Link>
           </p>
         </div>
       </div>
 
-      <div>
-        <div>
-          <h2>Transforme o bem-estar na sua organização</h2>
-          <p>
+      <div className="hidden lg:flex lg:w-1/2 xl:w-3/5 bg-linear-to-br from-(--roxo-escuro) to-(--azul-acinzentado) text-white p-12 flex-col justify-center">
+        <div className="max-w-lg mx-auto space-y-8">
+          <h2 className="text-4xl md:text-5xl font-bold leading-tight">Transforme o bem-estar na sua organização</h2>
+          <p className="text-xl text-gray-200 leading-relaxed">
             Acesse insights valiosos sobre a saúde emocional da sua equipe e
             crie um ambiente de trabalho mais saudável e produtivo.
           </p>
