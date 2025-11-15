@@ -6,6 +6,7 @@ import Cadastro from "../pages/Cadastro";
 import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
 import BarraLateral from "../components/BarraLateral";
+import DadosConta from "../pages/DadosConta";
 
 export const routes = createBrowserRouter([
     {
@@ -31,6 +32,9 @@ export const routes = createBrowserRouter([
     },
     {
         path: '/',
-        element: <BarraLateral/>
+        element: <BarraLateral/>,
+        children: [
+            { path: '/dados-conta', element: <DadosConta/>}
+        ]
     }
 ])
