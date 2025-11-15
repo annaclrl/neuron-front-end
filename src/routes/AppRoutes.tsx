@@ -4,11 +4,13 @@ import Integrantes from "../pages/Integrantes";
 import FAQContato from "../pages/FAQContato";
 import Cadastro from "../pages/Cadastro";
 import Login from "../pages/Login";
+import NotFound from "../pages/NotFound";
 
 export const routes = createBrowserRouter([
     {
         path: "/",
-        element: <PaginaInicial />
+        element: <PaginaInicial />,
+        errorElement: <NotFound />
     },
     {
         path: "/integrantes",
