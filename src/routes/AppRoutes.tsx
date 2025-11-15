@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import PaginaInicial from "../pages/PaginaInicial";
 import Integrantes from "../pages/Integrantes";
 import FAQContato from "../pages/FAQContato";
@@ -9,6 +9,19 @@ import BarraLateral from "../components/BarraLateral";
 import DadosConta from "../pages/DadosConta";
 import FormularioHumor from "../pages/FormularioEmocao";
 import HistoricoEmocoes from "../pages/HistoricoEmocoes";
+import type { JSX } from "react";
+import DashboardRH from "../pages/DashboardRh";
+
+const ProtectedRoute = ({ children, tiposPermitidos }: { children: JSX.Element; tiposPermitidos: string[] }) => {
+  const usuario = JSON.parse(localStorage.getItem("usuario_logado") || "{}");
+
+  if (!usuario || !tiposPermitidos.includes(usuario.tipo)) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+};
+
 
 export const routes = createBrowserRouter([
     {
@@ -38,7 +51,15 @@ export const routes = createBrowserRouter([
         children: [
             { path: 'formulario', element: <FormularioHumor/>},
             { path: "historico", element: <HistoricoEmocoes /> },
-            { path: 'dados-conta', element: <DadosConta/>}
+            { path: 'dados-conta', element: <DadosConta/>},
+            {
+                path: 'dashboard-rh',
+                element:( 
+                    <ProtectedRoute tiposPermitidos={["RH"]}>
+                        <DashboardRH />
+                    </ProtectedRoute>
+                ),       
+            }
         ]
     }
 ])
