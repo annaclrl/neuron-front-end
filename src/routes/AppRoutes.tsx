@@ -5,6 +5,7 @@ import FAQContato from "../pages/FAQContato";
 import Cadastro from "../pages/Cadastro";
 import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
+import BarraLateral from "../components/BarraLateral";
 
 export const routes = createBrowserRouter([
     {
@@ -27,5 +28,9 @@ export const routes = createBrowserRouter([
     {
         path: '/login',
         element: <Login />
+    },
+    {
+        path: '/',
+        element: <BarraLateral/>
     }
 ])
