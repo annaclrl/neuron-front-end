@@ -3,9 +3,6 @@ export type TipoUsuario = 'RH' | 'GESTOR' | 'FUNCIONARIO';
 export type DadosPessoais = {
   nome: string;
   email: string;
-  senha: string;
-  departamento: string;
-  status: string;
 };
 
 export type DadosLogin = {
@@ -25,3 +22,9 @@ export type CadastroForm =
 
 export type UsuarioComLogin =
   Pick<CadastroForm, "email" | "senha">;
+
+
+export type Usuario =
+  Pick<DadosPessoais, "nome" | "email"> & {
+    tipo: TipoUsuario;
+  };
