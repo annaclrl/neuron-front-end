@@ -13,7 +13,7 @@ export const routes = createBrowserRouter([
         element: <Integrantes />
     },
     {
-        path: "/sobre",
+        path: "/informacoes",
         element: <FAQContato />
     }
 ])

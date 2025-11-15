@@ -50,7 +50,7 @@ const PaginaInicial = () => {
                 Colaboradores
               </button>
               <button 
-                onClick={() => navigate('/sobre')} 
+                onClick={() => navigate('/informacoes')} 
                 className="px-6 py-3 lg:px-8 lg:py-4 rounded-lg font-semibold transition-all duration-200 text-base lg:text-lg bg-white text-gray-700 border border-gray-300 hover:border-gray-400 hover:bg-gray-50"
               >
                 Saiba Mais
