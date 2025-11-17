@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import type { CadastroForm } from '../../types/usuario';
+import Logo from '../../assets/images/logo-neuron.png'
 
 const Cadastro = () => {
   const {
@@ -29,7 +30,6 @@ const Cadastro = () => {
 
       const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
 
-      // Padronizo o campo como "tipo" ao salvar
       const novoUsuario = {
         id: Date.now(),
         nome: data.nome,
@@ -64,9 +64,11 @@ const Cadastro = () => {
     <main className="min-h-screen flex" style={{ fontFamily: 'var(--fonte-principal)' }}>
       <div className="w-full lg:w-1/2 xl:w-2/5 flex flex-col justify-center px-6 py-12 lg:px-12 bg-white">
         <div className="text-center mb-8">
-          <div className="mb-6">
-            <span className="text-2xl font-bold" style={{ color: 'var(--roxo-escuro)' }}>Neuron</span>
-          </div>
+          <img
+            src={Logo}
+            alt="Logo do site com um cérebro e escrito neuron"
+            className="h-12 md:h-16 lg:h-30 w-auto mx-auto mb-4"
+          />
           <h1 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: 'var(--cinza-escuro)' }}>Criar sua conta</h1>
           <p className="text-gray-600 text-lg">
             Junte-se à nossa plataforma e comece a transformar o bem-estar no ambiente corporativo

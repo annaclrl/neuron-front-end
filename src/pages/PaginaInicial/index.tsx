@@ -3,28 +3,31 @@ import Agenda from '../../assets/icons/icon-agenda.png';
 import Alvo from '../../assets/icons/icon-alvo.png';
 import Escudo from '../../assets/icons/icon-escudo.png';
 import Lupa from '../../assets/icons/icon-pesquisar.png';
+import Logo from '../../assets/images/logo-neuron.png'
 import { useNavigate } from 'react-router-dom';
 
 const PaginaInicial = () => {
   const navigate = useNavigate();
-   
+
   return (
     <div className="min-h-screen bg-white text-gray-900" style={{ fontFamily: 'var(--fonte-principal)' }}>
 
       <header className="flex justify-between items-center px-4 md:px-8 py-4 md:py-6 bg-white border-b border-gray-100 shadow-sm">
-        <div className="logo">
-          <span className="text-xl md:text-2xl font-bold" style={{ color: 'var(--roxo-escuro)' }}>Neuron</span>
-        </div>
+        <img
+          src={Logo}
+          alt="Logo"
+          className="h-8 md:h-10 lg:h-25 w-auto" 
+        />
         <nav className="flex gap-3 md:gap-4">
-          <button 
-            onClick={() => navigate('/login')} 
+          <button
+            onClick={() => navigate('/login')}
             className="px-4 md:px-6 py-2 md:py-2.5 rounded-lg font-medium text-sm transition-all duration-200 text-gray-600 hover:text-gray-900 hover:bg-gray-50"
             style={{ fontFamily: 'var(--fonte-principal)' }}
           >
             Entrar
           </button>
-          <button 
-            onClick={() => navigate('/cadastro')} 
+          <button
+            onClick={() => navigate('/cadastro')}
             className="px-4 md:px-6 py-2 md:py-2.5 rounded-lg font-medium text-sm transition-all duration-200 bg-(--roxo-vibrante) text-white hover:bg-[#8B5FFF] shadow-sm hover:shadow-md"
             style={{ fontFamily: 'var(--fonte-principal)' }}
           >
@@ -43,14 +46,14 @@ const PaginaInicial = () => {
               Conectando tecnologia e empatia para promover um ambiente corporativo saudável e produtivo
             </p>
             <div className="flex flex-col sm:flex-row gap-4 lg:gap-6">
-              <button 
-                onClick={() => navigate('/integrantes')} 
+              <button
+                onClick={() => navigate('/integrantes')}
                 className="px-6 py-3 lg:px-8 lg:py-4 rounded-lg font-semibold transition-all duration-200 text-base lg:text-lg bg-(--roxo-vibrante) text-white hover:bg-[#8B5FFF] shadow-lg hover:shadow-xl"
               >
                 Colaboradores
               </button>
-              <button 
-                onClick={() => navigate('/informacoes')} 
+              <button
+                onClick={() => navigate('/informacoes')}
                 className="px-6 py-3 lg:px-8 lg:py-4 rounded-lg font-semibold transition-all duration-200 text-base lg:text-lg bg-white text-gray-700 border border-gray-300 hover:border-gray-400 hover:bg-gray-50"
               >
                 Saiba Mais
@@ -58,9 +61,9 @@ const PaginaInicial = () => {
             </div>
           </div>
           <div className="flex justify-center lg:justify-end mt-8 lg:mt-0">
-            <img 
-              src={EmojiFeliz} 
-              alt="Duas pessoas abraçando um emoji sorrindo" 
+            <img
+              src={EmojiFeliz}
+              alt="Duas pessoas abraçando um emoji sorrindo"
               className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl rounded-2xl shadow-2xl"
             />
           </div>

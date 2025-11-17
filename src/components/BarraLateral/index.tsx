@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext"; 
 import type { Usuario } from "../../types/usuario";
+import Logo from '../../assets/images/logo-neuron.png'
 
 const BarraLateral = () => {
   const navigate = useNavigate();
@@ -67,12 +68,12 @@ const BarraLateral = () => {
           darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-800"
         } shadow-xl z-10 transition-colors duration-300`}
       >
-        <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-          <h1 className={`text-2xl font-bold ${
-            darkMode ? "text-purple-300" : "text-(--roxo-escuro)"
-          }`}>
-            Neuron
-          </h1>
+        <div className=" border-b border-gray-200 dark:border-gray-700">
+          <img
+            src={Logo}
+            alt="Logo do site com um cérebro e escrito neuron"
+            className="h-12 md:h-16 lg:h-30 w-auto mx-auto mb-4"
+          />
         </div>
 
         <nav className="flex-1 p-4 space-y-2">
