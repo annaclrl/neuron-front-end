@@ -1,4 +1,4 @@
-export type TipoUsuario = 'RH' | 'GESTOR' | 'FUNCIONARIO';
+export type TipoUsuario = 'RH_CLEVEL' | 'GESTOR' | 'FUNCIONARIO';
 
 export type DadosPessoais = {
   nome: string;
@@ -30,3 +30,4 @@ export type Usuario =
   Pick<DadosPessoais, "nome" | "email"> & {
     tipo: TipoUsuario;
   };
+
