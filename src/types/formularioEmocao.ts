@@ -9,6 +9,7 @@ export type FormInputs = {
   problemas: number;
   modoVer: number;
   observacaoGeral: string;
+  dataRegistro?: string;
 };
 
 export type DicaEmocao = {

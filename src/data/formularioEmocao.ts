@@ -1,14 +1,4 @@
-import type { DicaEmocao, RespostaHumor } from "../types/formularioEmocao";
-
-export const emocaoOptions = [
-  { id: 1, nome: "Feliz" },
-  { id: 2, nome: "Cansado" },
-  { id: 3, nome: "Estressado" },
-  { id: 4, nome: "Neutro" },
-  { id: 5, nome: "Motivado" },
-  { id: 6, nome: "Ansioso" },
-];
-
+import type { DicaEmocao } from "../types/formularioEmocao";
 
 export const dicasEmocao: DicaEmocao[] = [
   { 
@@ -41,12 +31,19 @@ export const dicasEmocao: DicaEmocao[] = [
     dica: "Tente focar no presente. Quebre tarefas grandes em etapas menores e respire.", 
     cor: "from-orange-400 to-orange-600" 
   },
-];
-
-
-export const mockRespostas: RespostaHumor[] = [
-  { data: "2025-11-08", emocao: "Feliz", intensidade: 0.9 },
-  { data: "2025-11-09", emocao: "Cansado", intensidade: 0.4 },
-  { data: "2025-11-10", emocao: "Estressado", intensidade: 0.7 },
-  { data: "2025-11-11", emocao: "Neutro", intensidade: 0.5 },
+  { 
+    emocao: "Triste", 
+    dica: "Tudo bem se sentir triste. Permita-se sentir, converse com alguém de confiança ou faça algo que lhe traga conforto.", 
+    cor: "from-indigo-400 to-indigo-600" 
+  },
+  { 
+    emocao: "Frustrado", 
+    dica: "Reconheça a frustração, respire fundo e tente redirecionar sua energia para pequenas ações que você pode controlar.", 
+    cor: "from-pink-400 to-pink-600" 
+  },
+  { 
+    emocao: "Relaxado", 
+    dica: "Aproveite esse estado de calma. Momentos de relaxamento ajudam a recarregar sua energia para o que vem a seguir.", 
+    cor: "from-teal-400 to-teal-600" 
+  },
 ];
