@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTheme } from "../../context/ThemeContext";
 import type { FormInputs, DicaEmocao } from "../../types/formularioEmocao"
-import { emocaoOptions, dicasEmocao } from "../../data/formularioEmocao"
+import { dicasEmocao } from "../../data/formularioEmocao"
 
 
 const FormularioHumor = () => {
@@ -12,70 +12,102 @@ const FormularioHumor = () => {
   const [feedback, setFeedback] = useState<string>("");
   const [dicaAtual, setDicaAtual] = useState<DicaEmocao | null>(null);
   const [contadorRegistros, setContadorRegistros] = useState(0);
-
+  const [emocaoOptions, setEmocaoOptions] = useState<{ id: number, nome: string }[]>([]);
 
   const idEmocao = watch("idEmocao");
   const intensidade = watch("intensidade");
 
+
   useEffect(() => {
-    const registros = localStorage.getItem('mindtrack_registros_total');
+    const fetchEmocoes = async () => {
+      try {
+        const res = await fetch("http://localhost:8080/emocoes");
+        if (!res.ok) throw new Error("Erro ao buscar emoções");
+        const data = await res.json();
+        setEmocaoOptions(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchEmocoes();
+  }, []);
+
+  useEffect(() => {
+    const registros = localStorage.getItem('registros_total');
     setContadorRegistros(registros ? parseInt(registros) : 0);
   }, []);
 
   useEffect(() => {
     if (idEmocao) {
       const emocaoSelecionada = emocaoOptions.find(e => e.id === parseInt(idEmocao.toString()));
-      const dica = dicasEmocao.find(d => d.emocao === emocaoSelecionada?.nome);
-      setDicaAtual(dica || null);
+      setDicaAtual(dicasEmocao.find(d => d.emocao === emocaoSelecionada?.nome) || null);
     } else {
       setDicaAtual(null);
     }
-  }, [idEmocao]);
+  }, [idEmocao, emocaoOptions]);
 
-  const onSubmit = (data: FormInputs) => {
-    const novoTotal = contadorRegistros + 1;
-    setContadorRegistros(novoTotal);
-    localStorage.setItem('mindtrack_registros_total', novoTotal.toString());
+  const onSubmit = async (data: FormInputs) => {
 
-    const agora = new Date().toISOString();
+    const agora = data.dataRegistro
+      ? new Date(data.dataRegistro).toISOString().slice(0, -1)
+      : new Date().toISOString().slice(0, -1);
 
-    const registroEmocao = {
-      INT_REGIST_EMOCAO: data.intensidade,
-      DS_REGIST_EMOCAO: data.descricao,
-      DT_REGIST_EMOCAO: agora,
-      ID_EMOCAO: data.idEmocao,
-      ID_RESPOSTA: null,
-    };
 
-    const respostaFormulario = {
-      DT_RESPOSTA: agora,
-      MOT_RESPOSTA: data.motivacao,
-      FEL_RESPOSTA: data.felicidade,
-      EST_RESPOSTA: data.estresse,
-      OBS_RESPOSTA: data.observacaoGeral,
-      SAU_MEN_RESPOSTA: data.saudeMental,
-      PROB_RESPOSTA: data.problemas,
-      MOD_VER_RESPOSTA: data.modoVer,
-      DT_ANL_RESPOSTA: agora,
-      ID_USUARIO: 1,
-      ID_REGIST_EMOCAO: null,
-    };
+    try {
+      const registroEmocaoRes = await fetch("http://localhost:8080/registro-emocao", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          intRegistEmocao: data.intensidade,
+          dsRegistEmocao: data.descricao,
+          dtRegistEmocao: agora,
+          idEmocao: parseInt(data.idEmocao.toString()),
+          idUsuario: 25
+        })
+      });
 
-    const historico = JSON.parse(localStorage.getItem('mindtrack_historico') || '[]');
-    const novoRegistro = {
-      ...data,
-      registroEmocao,
-      respostaFormulario,
-      data: agora,
-      id: Date.now()
-    };
-    historico.push(novoRegistro);
-    localStorage.setItem('mindtrack_historico', JSON.stringify(historico));
+      if (!registroEmocaoRes.ok) throw new Error("Erro ao criar registro de emoção");
 
-    setFeedback("Seu humor foi registrado com sucesso!");
+      const registroEmocao = await registroEmocaoRes.json();
 
-    setTimeout(() => setFeedback(""), 3000);
+      const respostaFormularioRes = await fetch("http://localhost:8080/resposta-formulario", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          dtResposta: agora,
+          motivacao: data.motivacao,
+          felicidade: data.felicidade,
+          estresse: data.estresse,
+          observacao: data.observacaoGeral,
+          saudeMental: data.saudeMental,
+          problemas: data.problemas,
+          modoVer: data.modoVer,
+          dtAnalise: agora,
+          idUsuario: 25,
+          idRegistEmocao: registroEmocao.idRegistEmocao
+        })
+      });
+
+      if (!respostaFormularioRes.ok) throw new Error("Erro ao criar resposta do formulário");
+
+      await respostaFormularioRes.json();
+
+      setContadorRegistros(prev => {
+        const novo = prev + 1;
+        localStorage.setItem('mindtrack_registros_total', novo.toString());
+        return novo;
+      });
+
+      setFeedback("Seu humor foi registrado com sucesso!");
+      setTimeout(() => setFeedback(""), 3000);
+
+    } catch (error) {
+      console.error("Erro ao registrar emoção:", error);
+      setFeedback("Ocorreu um erro ao registrar seu humor. Tente novamente.");
+      setTimeout(() => setFeedback(""), 3000);
+    }
   };
+
 
   const getIntensidadeLabel = (intensidade: number) => {
     if (intensidade <= 3) return "Baixa";
@@ -130,7 +162,7 @@ const FormularioHumor = () => {
               <div className="space-y-2">
                 <label htmlFor="idEmocao" className={`block text-sm font-semibold ${darkMode ? "text-gray-200" : "text-gray-700"
                   }`}>
-                  Emoção Principal
+                  Emoção
                 </label>
                 <select
                   id="idEmocao"
@@ -201,17 +233,27 @@ const FormularioHumor = () => {
               <div className="space-y-2">
                 <label htmlFor="descricao" className={`block text-sm font-semibold ${darkMode ? "text-gray-200" : "text-gray-700"
                   }`}>
-                  Descrição (Opcional)
+                  Descrição
                 </label>
                 <textarea
                   id="descricao"
-                  {...register("descricao")}
+                  {...register("descricao", { required: "A descrição é obrigatória" })}
                   placeholder="Descreva melhor como está se sentindo..."
                   className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-(--roxo-vibrante) focus:border-transparent transition-all duration-200 resize-none ${darkMode
                     ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
                     : "bg-white border-gray-300 text-gray-700"
                     }`}
                   rows={3}
+                />
+                {errors.descricao && (
+                  <span className="text-red-500 text-sm block mt-1">{errors.descricao.message}</span>
+                )}
+
+                <input
+                  type="datetime-local"
+                  id="dataRegistro"
+                  {...register("dataRegistro")}
+                  className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-(--roxo-vibrante) focus:border-transparent transition-all duration-200 ${darkMode ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400" : "bg-white border-gray-300 text-gray-700"}`}
                 />
               </div>
 
@@ -254,11 +296,11 @@ const FormularioHumor = () => {
                 <div className="space-y-2 mt-4">
                   <label htmlFor="observacaoGeral" className={`block text-sm font-semibold ${darkMode ? "text-gray-200" : "text-gray-700"
                     }`}>
-                    Observações Gerais (Opcional)
+                    Observações Gerais
                   </label>
                   <textarea
                     id="observacaoGeral"
-                    {...register("observacaoGeral")}
+                    {...register("observacaoGeral", { required: "As observações gerais são obrigatórias" })}
                     placeholder="Alguma observação adicional sobre seu estado emocional?"
                     className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-(--roxo-vibrante) focus:border-transparent transition-all duration-200 resize-none ${darkMode
                       ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
@@ -266,6 +308,10 @@ const FormularioHumor = () => {
                       }`}
                     rows={3}
                   />
+                  {errors.observacaoGeral && (
+                    <span className="text-red-500 text-sm block mt-1">{errors.observacaoGeral.message}</span>
+                  )}
+
                 </div>
               </div>
 
