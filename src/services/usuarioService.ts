@@ -51,3 +51,20 @@ export async function cadastrarUsuario(data: CadastroForm): Promise<void> {
     throw new Error("ERRO_CADASTRO");
   }
 }
+
+
+export async function buscarUsuarioPorId(id: number) {
+    const token = localStorage.getItem('token');
+
+    const response = await fetch(`http://localhost:8080/usuarios/${id}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('Erro ao obter os dados do usuario.');
+    }
+
+    return await response.json();
+};
