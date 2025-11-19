@@ -3,6 +3,8 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import type { UsuarioComLogin } from '../../types/usuario';
 import Logo from '../../assets/images/logo-neuron.png'
+import { login } from '../../services/authService';
+import { buscarUsuarioPorId } from '../../services/usuarioService';
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<UsuarioComLogin>();
@@ -19,43 +21,61 @@ const Login = () => {
     setLoginError('');
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 800));
+      // Faz login e recebe token
+      await login(data);
+      const idUsuario = localStorage.getItem("userId");
+      console.log("ID do usuário:", idUsuario);
 
-      const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-      const usuario = usuarios.find((u: any) => u.email === data.email && u.senha === data.senha);
+      // Busca dados do usuário
+      const usuarioLogado = await buscarUsuarioPorId(Number(idUsuario));
+      console.log("Usuário logado:", usuarioLogado);
 
-      if (usuario) {
-        const usuarioParaSalvar = {
-          ...usuario,
-          tipo: usuario.tipo || usuario.tipoUsuario || 'FUNCIONARIO'
-        };
+      // Mapeia o tipo de usuário para salvar no localStorage
+      const tipoMap: Record<number, string> = {
+        1: "RH_CLEVEL",
+        2: "FUNCIONARIO",
+        3: "GESTOR"
+      };
 
-        localStorage.setItem('usuario_logado', JSON.stringify(usuarioParaSalvar));
+      const tipo = tipoMap[usuarioLogado.codigoAcesso] || "FUNCIONARIO";
 
-        switch (usuarioParaSalvar.tipo) {
-          case 'RH':
-            navigate('/dashboard-rh');
-            break;
-          case 'GESTOR':
-            navigate('/dashboard-gestor');
-            break;
-          case 'FUNCIONARIO':
-            navigate('/formulario');
-            break;
-          default:
-            navigate('/formulario');
-            break;
-        }
-      } else {
-        setLoginError('E-mail ou senha incorretos');
+      // Salva usuário no localStorage com a propriedade 'tipo'
+      localStorage.setItem("usuario_logado", JSON.stringify({
+        id: usuarioLogado.id,
+        nome: usuarioLogado.nome,
+        tipo,
+        codigoAcesso: usuarioLogado.codigoAcesso,
+        email: usuarioLogado.email,
+        codigoDepartamento: usuarioLogado.codigoDepartamento
+      }));
+
+      // Redireciona de acordo com o codigoAcesso
+      switch (usuarioLogado.codigoAcesso) {
+        case 1:
+          console.log("Redirecionando para RH");
+          navigate('/dashboard-rh');
+          break;
+        case 2:
+          console.log("Redirecionando para FUNCIONARIO");
+          navigate('/formulario');
+          break;
+        case 3:
+          console.log("Redirecionando para GESTOR");
+          navigate('/dashboard-gestor');
+          break;
+        default:
+          console.log("Redirecionando para padrão");
+          navigate('/formulario');
       }
-    } catch (error) {
-      console.error('Erro no login:', error);
-      setLoginError('Ocorreu um erro. Tente novamente.');
+
+    } catch (err) {
+      console.error("Erro no login ou busca:", err);
+      setLoginError('E-mail ou senha incorretos');
     } finally {
       setIsLoading(false);
     }
   };
+
 
   return (
     <main className="min-h-screen flex" style={{ fontFamily: 'var(--fonte-principal)' }}>

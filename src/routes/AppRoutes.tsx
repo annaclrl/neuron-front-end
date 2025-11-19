@@ -13,15 +13,16 @@ import type { JSX } from "react";
 import DashboardRH from "../pages/DashboardRh";
 import DashboardGestor from "../pages/DashboardGestor";
 
-const ProtectedRoute = ({ children, tiposPermitidos }: { children: JSX.Element; tiposPermitidos: string[] }) => {
+const ProtectedRoute = ({ children, tiposPermitidos }: { children: JSX.Element; tiposPermitidos: number[] }) => {
     const usuario = JSON.parse(localStorage.getItem("usuario_logado") || "{}");
 
-    if (!usuario || !tiposPermitidos.includes(usuario.tipo)) {
+    if (!usuario || !tiposPermitidos.includes(usuario.codigoAcesso)) {
         return <Navigate to="/login" replace />;
     }
 
     return children;
 };
+
 
 
 export const routes = createBrowserRouter([
@@ -56,7 +57,7 @@ export const routes = createBrowserRouter([
             {
                 path: 'dashboard-rh',
                 element: (
-                    <ProtectedRoute tiposPermitidos={["RH"]}>
+                    <ProtectedRoute tiposPermitidos={[1]}>
                         <DashboardRH />
                     </ProtectedRoute>
                 ),
@@ -64,7 +65,7 @@ export const routes = createBrowserRouter([
             {
                 path: "dashboard-gestor",
                 element: (
-                    <ProtectedRoute tiposPermitidos={["GESTOR"]}>
+                    <ProtectedRoute tiposPermitidos={[3]}>
                         <DashboardGestor />
                     </ProtectedRoute>
                 ),
