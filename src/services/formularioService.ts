@@ -78,7 +78,12 @@ export async function criarRespostaFormulario(
 export async function salvarFormulario(data: FormInputs, idUsuario: number) {
 
   const registro = await criarRegistroEmocao(data, idUsuario);
-  await criarRespostaFormulario(data, idUsuario, registro.idRegistEmocao);
+  const idRegistEmocao = registro?.idRegistEmocao || registro?.id || registro;
 
-  return registro;
+  if (!idRegistEmocao) {
+    throw new Error("ID do registro de emoção não retornado pelo backend");
+  }
+
+  return await criarRespostaFormulario(data, idUsuario, idRegistEmocao);
 }
+

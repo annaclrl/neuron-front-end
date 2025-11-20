@@ -18,7 +18,7 @@ const corPorEmocao = (emocao: string, darkMode: boolean): string => {
 const HistoricoEmocoes = () => {
   const { darkMode } = useTheme();
   const [respostas, setRespostas] = useState<RespostaHumor[]>([]);
-  const usuarioId = 25;
+  const usuarioId = localStorage.getItem("userId");
 
   useEffect(() => {
     const fetchHistorico = async () => {
