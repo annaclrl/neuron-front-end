@@ -16,6 +16,7 @@ const FormularioHumor = () => {
 
   const idEmocao = watch("idEmocao");
   const intensidade = watch("intensidade");
+  const idUsuario = localStorage.getItem("userId");
 
 
   useEffect(() => {
@@ -54,6 +55,14 @@ const FormularioHumor = () => {
 
 
     try {
+      const emocao = {
+          intRegistEmocao: data.intensidade,
+          dsRegistEmocao: data.descricao,
+          dtRegistEmocao: agora,
+          idEmocao: parseInt(data.idEmocao.toString()),
+          idUsuario: Number(idUsuario)
+      }
+      console.log(emocao);
       const registroEmocaoRes = await fetch("http://localhost:8080/registro-emocao", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -62,7 +71,7 @@ const FormularioHumor = () => {
           dsRegistEmocao: data.descricao,
           dtRegistEmocao: agora,
           idEmocao: parseInt(data.idEmocao.toString()),
-          idUsuario: 25
+          idUsuario: Number(idUsuario)
         })
       });
 
@@ -83,7 +92,7 @@ const FormularioHumor = () => {
           problemas: data.problemas,
           modoVer: data.modoVer,
           dtAnalise: agora,
-          idUsuario: 25,
+          idUsuario: Number(idUsuario),
           idRegistEmocao: registroEmocao.idRegistEmocao
         })
       });

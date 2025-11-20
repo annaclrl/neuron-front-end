@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext"; 
 import type { Usuario } from "../../types/usuario";
-import Logo from '../../assets/images/logo-neuron.png';
+import Logo from '../../assets/images/logo-neuron.png'
 
 const BarraLateral = () => {
   const navigate = useNavigate();
@@ -23,18 +23,8 @@ const BarraLateral = () => {
 
   useEffect(() => {
     const usuarioLogado = localStorage.getItem("usuario_logado");
-
     if (usuarioLogado) {
-      const parsed = JSON.parse(usuarioLogado);
-
-      const tipo =
-        parsed.tipo ||
-        parsed.tipoUsuario ||
-        parsed.tipoAcesso ||
-        parsed.role ||
-        null;
-
-      setUsuario({ ...parsed, tipo });
+      setUsuario(JSON.parse(usuarioLogado));
     } else {
       navigate("/login");
     }
@@ -42,8 +32,6 @@ const BarraLateral = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("usuario_logado");
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
     navigate("/login");
   };
 
@@ -53,26 +41,41 @@ const BarraLateral = () => {
 
   if (!usuario) return null;
 
-  const tipoUser = usuario.tipo;
-
   const sidebarLinks = [
     { to: "/historico", label: "Histórico", icon: <BarChart2 size={20} /> },
     { to: "/formulario", label: "Formulário", icon: <ClipboardList size={20} /> },
     { to: "/dados-conta", label: "Perfil", icon: <User size={20} /> },
   ];
 
-  if (tipoUser === "RH_CLEVEL") {
+  if (usuario.tipo === "RH_CLEVEL") {
     sidebarLinks.push({
       to: "/dashboard-rh",
       label: "Dashboard RH",
       icon: <Home size={20} />,
     });
-  } else if (tipoUser === "GESTOR") {
+  } else if (usuario.tipo === "GESTOR") {
     sidebarLinks.push({
       to: "/dashboard-gestor",
       label: "Dashboard Gestor",
       icon: <Home size={20} />,
     });
+  }
+
+
+  const formatarAcesso = (acesso: number) =>{
+    switch (acesso) {
+      case 1:
+        return "Dashboard RH";
+
+      case 2:  
+        return null;
+
+      case 3:
+         return "Dashboard Gestor";
+    
+      default:
+        return null;
+    }
   }
 
   return (
@@ -82,7 +85,7 @@ const BarraLateral = () => {
           darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-800"
         } shadow-xl z-10 transition-colors duration-300`}
       >
-        <div className="border-b border-gray-200 dark:border-gray-700">
+        <div className=" border-b border-gray-200 dark:border-gray-700">
           <img
             src={Logo}
             alt="Logo do site com um cérebro e escrito neuron"
@@ -140,21 +143,17 @@ const BarraLateral = () => {
           </button>
         </div>
       </aside>
-
-      {/* ------- MOBILE TOPBAR ------- */}
       <div
         className={`lg:hidden w-full shadow-sm border-b p-4 fixed top-0 left-0 right-0 z-20 ${
-          darkMode
-            ? "bg-gray-800 text-white border-gray-700"
+          darkMode 
+            ? "bg-gray-800 text-white border-gray-700" 
             : "bg-white text-gray-800 border-gray-100"
         } transition-colors duration-300`}
       >
         <div className="flex justify-between items-center">
-          <h1
-            className={`text-xl font-bold ${
-              darkMode ? "text-purple-300" : "text-(--roxo-escuro)"
-            }`}
-          >
+          <h1 className={`text-xl font-bold ${
+            darkMode ? "text-purple-300" : "text-(--roxo-escuro)"
+          }`}>
             Neuron
           </h1>
 
@@ -174,28 +173,27 @@ const BarraLateral = () => {
             {showProfileMenu && (
               <div
                 className={`absolute right-0 top-12 rounded-lg shadow-lg border py-2 w-48 z-30 ${
-                  darkMode
-                    ? "bg-gray-800 text-white border-gray-700"
+                  darkMode 
+                    ? "bg-gray-800 text-white border-gray-700" 
                     : "bg-white text-gray-800 border-gray-200"
-                }`}
+                } transition-colors duration-300`}
               >
-                <div
-                  className={`px-4 py-2 border-b ${
-                    darkMode ? "border-gray-700" : "border-gray-100"
-                  }`}
-                >
+                <div className={`px-4 py-2 border-b ${
+                  darkMode ? "border-gray-700" : "border-gray-100"
+                }`}>
                   <p className="text-sm font-semibold">{usuario.nome}</p>
                   <p className="text-xs opacity-80">{usuario.email}</p>
 
-                  {/* 🔥 corrigido para não quebrar */}
-                  <p className="text-xs opacity-80 capitalize">
-                    {tipoUser ? tipoUser.toLowerCase() : "usuário"}
-                  </p>
+                  {formatarAcesso(usuario.codigoAcesso) && (
+                    <p className="text-xs opacity-80 capitalize">
+                      {formatarAcesso(usuario.codigoAcesso)}
+                    </p>
+                  )}
                 </div>
 
                 <Link
                   to="/dados-conta"
-                  className={`flex items-center gap-2 px-4 py-2 text-sm ${
+                  className={`flex items-center gap-2 px-4 py-2 text-sm transition-colors ${
                     darkMode ? "hover:bg-gray-700" : "hover:bg-gray-50"
                   }`}
                   onClick={() => setShowProfileMenu(false)}
@@ -206,7 +204,7 @@ const BarraLateral = () => {
 
                 <button
                   onClick={toggleDarkMode}
-                  className={`flex items-center gap-2 w-full px-4 py-2 text-sm ${
+                  className={`flex items-center gap-2 w-full px-4 py-2 text-sm transition-colors ${
                     darkMode ? "hover:bg-gray-700" : "hover:bg-gray-50"
                   }`}
                 >
@@ -216,9 +214,9 @@ const BarraLateral = () => {
 
                 <button
                   onClick={handleLogout}
-                  className={`flex items-center gap-2 w-full px-4 py-2 text-sm ${
-                    darkMode
-                      ? "text-red-400 hover:bg-gray-700"
+                  className={`flex items-center gap-2 w-full px-4 py-2 text-sm transition-colors ${
+                    darkMode 
+                      ? "text-red-400 hover:bg-gray-700" 
                       : "text-red-600 hover:bg-red-50"
                   }`}
                 >
@@ -230,13 +228,12 @@ const BarraLateral = () => {
           </div>
         </div>
       </div>
-
       <nav
         className={`lg:hidden fixed bottom-0 left-0 right-0 border-t p-3 z-20 ${
-          darkMode
-            ? "bg-gray-800 text-white border-gray-700"
+          darkMode 
+            ? "bg-gray-800 text-white border-gray-700" 
             : "bg-white text-gray-800 border-gray-100"
-        }`}
+        } transition-colors duration-300`}
       >
         <div className="flex justify-around items-center">
           {sidebarLinks.map((item) => {
@@ -245,13 +242,15 @@ const BarraLateral = () => {
               <Link
                 key={item.to}
                 to={item.to}
-                className={`flex flex-col items-center gap-1 p-2 rounded-lg ${
-                  isActive
-                    ? "text-(--roxo-vibrante)"
-                    : darkMode
-                    ? "text-gray-400"
-                    : "text-gray-600"
-                } ${darkMode ? "hover:bg-gray-700" : "hover:bg-gray-50"}`}
+                className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
+                  isActive 
+                    ? "text-(--roxo-vibrante)" 
+                    : darkMode 
+                      ? "text-gray-400" 
+                      : "text-gray-600"
+                } ${
+                  darkMode ? "hover:bg-gray-700" : "hover:bg-gray-50"
+                }`}
               >
                 {item.icon}
                 <span className="text-xs font-medium">{item.label}</span>
@@ -262,8 +261,10 @@ const BarraLateral = () => {
       </nav>
 
       <main
-        className={`flex-1 w-full min-h-screen overflow-y-auto ${
-          darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-800"
+        className={`flex-1 w-full min-h-screen overflow-y-auto transition-colors duration-300 ${
+          darkMode 
+            ? "bg-gray-900 text-white" 
+            : "bg-gray-100 text-gray-800"
         }`}
       >
         <div className="pt-16 pb-16 lg:pt-0 lg:pb-0">
