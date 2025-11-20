@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useTheme } from "../../context/ThemeContext";
 import type { FormInputs, DicaEmocao } from "../../types/formularioEmocao"
 import { dicasEmocao } from "../../data/formularioEmocao"
+import { salvarFormulario } from "../../services/formularioService";
 
 
 const FormularioHumor = () => {
@@ -48,74 +49,24 @@ const FormularioHumor = () => {
   }, [idEmocao, emocaoOptions]);
 
   const onSubmit = async (data: FormInputs) => {
+  try {
+    await salvarFormulario(data, Number(idUsuario));
 
-    const agora = data.dataRegistro
-      ? new Date(data.dataRegistro).toISOString().slice(0, -1)
-      : new Date().toISOString().slice(0, -1);
+    setContadorRegistros(prev => {
+      const novo = prev + 1;
+      localStorage.setItem("mindtrack_registros_total", novo.toString());
+      return novo;
+    });
 
+    setFeedback("Seu humor foi registrado com sucesso!");
+    setTimeout(() => setFeedback(""), 3000);
 
-    try {
-      const emocao = {
-          intRegistEmocao: data.intensidade,
-          dsRegistEmocao: data.descricao,
-          dtRegistEmocao: agora,
-          idEmocao: parseInt(data.idEmocao.toString()),
-          idUsuario: Number(idUsuario)
-      }
-      console.log(emocao);
-      const registroEmocaoRes = await fetch("http://localhost:8080/registro-emocao", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          intRegistEmocao: data.intensidade,
-          dsRegistEmocao: data.descricao,
-          dtRegistEmocao: agora,
-          idEmocao: parseInt(data.idEmocao.toString()),
-          idUsuario: Number(idUsuario)
-        })
-      });
-
-      if (!registroEmocaoRes.ok) throw new Error("Erro ao criar registro de emoção");
-
-      const registroEmocao = await registroEmocaoRes.json();
-
-      const respostaFormularioRes = await fetch("http://localhost:8080/resposta-formulario", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          dtResposta: agora,
-          motivacao: data.motivacao,
-          felicidade: data.felicidade,
-          estresse: data.estresse,
-          observacao: data.observacaoGeral,
-          saudeMental: data.saudeMental,
-          problemas: data.problemas,
-          modoVer: data.modoVer,
-          dtAnalise: agora,
-          idUsuario: Number(idUsuario),
-          idRegistEmocao: registroEmocao.idRegistEmocao
-        })
-      });
-
-      if (!respostaFormularioRes.ok) throw new Error("Erro ao criar resposta do formulário");
-
-      await respostaFormularioRes.json();
-
-      setContadorRegistros(prev => {
-        const novo = prev + 1;
-        localStorage.setItem('mindtrack_registros_total', novo.toString());
-        return novo;
-      });
-
-      setFeedback("Seu humor foi registrado com sucesso!");
-      setTimeout(() => setFeedback(""), 3000);
-
-    } catch (error) {
-      console.error("Erro ao registrar emoção:", error);
-      setFeedback("Ocorreu um erro ao registrar seu humor. Tente novamente.");
-      setTimeout(() => setFeedback(""), 3000);
-    }
-  };
+  } catch (error) {
+    console.error("Erro ao salvar formulário:", error);
+    setFeedback("Ocorreu um erro ao registrar seu humor. Tente novamente.");
+    setTimeout(() => setFeedback(""), 3000);
+  }
+};
 
 
   const getIntensidadeLabel = (intensidade: number) => {
