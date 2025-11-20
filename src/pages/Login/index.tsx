@@ -21,16 +21,14 @@ const Login = () => {
     setLoginError('');
 
     try {
-      // Faz login e recebe token
+
       await login(data);
       const idUsuario = localStorage.getItem("userId");
       console.log("ID do usuário:", idUsuario);
 
-      // Busca dados do usuário
       const usuarioLogado = await buscarUsuarioPorId(Number(idUsuario));
       console.log("Usuário logado:", usuarioLogado);
 
-      // Mapeia o tipo de usuário para salvar no localStorage
       const tipoMap: Record<number, string> = {
         1: "RH_CLEVEL",
         2: "FUNCIONARIO",
@@ -39,7 +37,6 @@ const Login = () => {
 
       const tipo = tipoMap[usuarioLogado.codigoAcesso] || "FUNCIONARIO";
 
-      // Salva usuário no localStorage com a propriedade 'tipo'
       localStorage.setItem("usuario_logado", JSON.stringify({
         id: usuarioLogado.id,
         nome: usuarioLogado.nome,
@@ -49,22 +46,17 @@ const Login = () => {
         codigoDepartamento: usuarioLogado.codigoDepartamento
       }));
 
-      // Redireciona de acordo com o codigoAcesso
       switch (usuarioLogado.codigoAcesso) {
         case 1:
-          console.log("Redirecionando para RH");
           navigate('/dashboard-rh');
           break;
         case 2:
-          console.log("Redirecionando para FUNCIONARIO");
           navigate('/formulario');
           break;
         case 3:
-          console.log("Redirecionando para GESTOR");
           navigate('/dashboard-gestor');
           break;
         default:
-          console.log("Redirecionando para padrão");
           navigate('/formulario');
       }
 
