@@ -2,8 +2,8 @@ import type { AtualizarUsuarioDto, CadastroForm } from "../types/usuario";
 
 const mapTipoUsuario = {
   RH_CLEVEL: 1,
-  GESTOR: 2,
-  FUNCIONARIO: 3,
+  FUNCIONARIO: 2,
+  GESTOR: 3,
 } as const;
 
 
