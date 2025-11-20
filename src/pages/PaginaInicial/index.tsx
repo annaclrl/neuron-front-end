@@ -16,7 +16,7 @@ const PaginaInicial = () => {
         <img
           src={Logo}
           alt="Logo"
-          className="h-8 md:h-10 lg:h-25 w-auto" 
+          className="h-8 md:h-10 lg:h-25 w-auto"
         />
         <nav className="flex gap-3 md:gap-4">
           <button
@@ -90,18 +90,28 @@ const PaginaInicial = () => {
               <div className="flex gap-4 p-6 bg-(--cinza-claro) rounded-xl border border-gray-200">
                 <img className="w-12 h-12 shrink-0 object-contain" src={Alvo} alt="Icone de um alvo" />
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Objetivo Claro</h3>
-                  <p className="text-gray-600 text-sm">Unir tecnologia e empatia para compreender o clima emocional das equipes</p>
+                  <h3 className="font-semibold text-gray-900 mb-2">Redução de Rotatividade</h3>
+                  <p className="text-gray-600 text-sm">Redução de 25% na rotatividade de funcionários.</p>
                 </div>
               </div>
+
               <div className="flex gap-4 p-6 bg-(--cinza-claro) rounded-xl border border-gray-200">
                 <img className="w-12 h-12 shrink-0 object-contain" src={Escudo} alt="Icone de um escudo" />
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Prevenção</h3>
-                  <p className="text-gray-600 text-sm">Ação preventiva contra estresse e burnout</p>
+                  <h3 className="font-semibold text-gray-900 mb-2">Menos Afastamentos</h3>
+                  <p className="text-gray-600 text-sm">32% menos afastamentos por estresse.</p>
+                </div>
+              </div>
+
+              <div className="flex gap-4 p-6 bg-(--cinza-claro) rounded-xl border border-gray-200">
+                <img className="w-12 h-12 shrink-0 object-contain" src={Agenda} alt="Icone de uma agenda" />
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-2">Satisfação Aumentada</h3>
+                  <p className="text-gray-600 text-sm">40% de aumento na satisfação da equipe.</p>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </section>
