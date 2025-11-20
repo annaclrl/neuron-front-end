@@ -50,9 +50,11 @@ const DadosConta = () => {
 
     navigate("/login");
     
-  } catch (error: any) {
+  } catch (error) {
+    const err = error as Error & { message?: string };
+    
     console.error(error);
-    alert("Erro ao atualizar dados: " + (error.message || "Tente novamente mais tarde."));
+    alert("Erro ao atualizar dados: " + (err.message || "Tente novamente mais tarde."));
   }
 };
 

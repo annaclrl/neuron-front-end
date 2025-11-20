@@ -16,6 +16,8 @@ const Cadastro = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [erroMensagem, setErroMensagem] = useState<string | null>(null);
+
 
   const onSubmit = async (data: CadastroForm) => {
     setIsLoading(true);
@@ -28,11 +30,13 @@ const Cadastro = () => {
           message: "Cadastro realizado com sucesso! Faça login para continuar.",
         },
       });
-    } catch (error: any) {
-      if (error.message === "EMAIL_DUPLICADO") {
-        alert("Este e-mail já está cadastrado.");
+    } catch (error) {
+      const err = error as Error & { message?: string };
+
+      if (err.message === "EMAIL_DUPLICADO") {
+        setErroMensagem("Este e-mail já está cadastrado.");
       } else {
-        alert(error.message);
+        setErroMensagem("Erro ao cadastrar. Tente novamente.");
       }
     } finally {
       setIsLoading(false);
@@ -96,7 +100,6 @@ const Cadastro = () => {
             {errors.email && <span className="text-red-600 text-sm font-medium block mt-1">{errors.email.message}</span>}
           </div>
 
-          {/* Senha */}
           <div className="space-y-2">
             <label htmlFor="senha" className="block text-sm font-medium text-gray-700 mb-2">
               Senha
@@ -173,6 +176,16 @@ const Cadastro = () => {
               </span>
             </p>
           </div>
+          {erroMensagem && (
+            <p style={{
+              color: "red",
+              marginBottom: "12px",
+              fontWeight: "600"
+            }}>
+              {erroMensagem}
+            </p>
+          )}
+
           <button
             type="submit"
             className={`w-full bg-(--roxo-vibrante) text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-[#8B5FFF] transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-3 ${isLoading ? 'opacity-80 cursor-not-allowed' : ''

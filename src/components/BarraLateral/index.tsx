@@ -24,7 +24,7 @@ const BarraLateral = () => {
   useEffect(() => {
     const usuarioLogado = localStorage.getItem("usuario_logado");
     if (usuarioLogado) {
-      setUsuario(JSON.parse(usuarioLogado));
+      setUsuario(JSON.parse(usuarioLogado) as Usuario);
     } else {
       navigate("/login");
     }

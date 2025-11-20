@@ -25,12 +25,13 @@ const HistoricoEmocoes = () => {
       try {
         const response = await fetch(`http://localhost:8080/registro-emocao/usuario/${usuarioId}`);
         if (!response.ok) throw new Error("Erro ao carregar histórico");
-        const data = await response.json();
 
-        const respostasFormatadas: RespostaHumor[] = data.map((item: any) => ({
-          data: item.data,         
+        const data: RespostaHumor[] = await response.json();
+
+        const respostasFormatadas: RespostaHumor[] = data.map((item) => ({
+          data: item.data,
           emocao: item.emocao,
-          intensidade: item.intensidade || 0.5
+          intensidade: item.intensidade ?? 0.5 
         }));
 
         setRespostas(respostasFormatadas);
