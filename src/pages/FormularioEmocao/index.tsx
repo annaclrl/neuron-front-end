@@ -23,7 +23,7 @@ const FormularioHumor = () => {
   useEffect(() => {
     const fetchEmocoes = async () => {
       try {
-        const res = await fetch("http://localhost:8080/emocoes");
+        const res = await fetch("https://neuronapi-oou1.onrender.com/emocoes");
         if (!res.ok) throw new Error("Erro ao buscar emoções");
         const data = await res.json();
         setEmocaoOptions(data);

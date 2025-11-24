@@ -23,7 +23,7 @@ const HistoricoEmocoes = () => {
   useEffect(() => {
     const fetchHistorico = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/registro-emocao/usuario/${usuarioId}`);
+        const response = await fetch(`https://neuronapi-oou1.onrender.com/registro-emocao/usuario/${usuarioId}`);
         if (!response.ok) throw new Error("Erro ao carregar histórico");
 
         const data: RespostaHumor[] = await response.json();

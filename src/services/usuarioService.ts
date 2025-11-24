@@ -22,7 +22,7 @@ export async function cadastrarUsuario(data: CadastroForm): Promise<void> {
 
   console.log("DTO enviado:", dto);
   try {
-    response = await fetch("http://localhost:8080/auth/register", {
+    response = await fetch("https://neuronapi-oou1.onrender.com/usuarios", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(dto),
@@ -53,15 +53,20 @@ export async function cadastrarUsuario(data: CadastroForm): Promise<void> {
   }
 }
 
+export async function buscarUsuarios() {
+  const response = await fetch("https://neuronapi-oou1.onrender.com/usuarios", {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    throw new Error('Erro ao obter os usuários');
+  }
+
+  return await response.json();
+}
 
 export async function buscarUsuarioPorId(id: number) {
-  const token = localStorage.getItem('token');
-
-  const response = await fetch(`http://localhost:8080/usuarios/${id}`, {
-    headers: {
-      'Authorization': `Bearer ${token}`,
-    },
-  });
+  const response = await fetch(`https://neuronapi-oou1.onrender.com/usuarios/${id}`);
 
   if (!response.ok) {
     throw new Error('Erro ao obter os dados do usuario.');
@@ -71,7 +76,6 @@ export async function buscarUsuarioPorId(id: number) {
 };
 
 export async function atualizarUsuario(id: number, data: AtualizarUsuarioDto) {
-  const token = localStorage.getItem("token");
 
   const agora = new Date().toISOString().slice(0, -1);
 
@@ -81,11 +85,10 @@ export async function atualizarUsuario(id: number, data: AtualizarUsuarioDto) {
     dataCadastro: data.dataCadastro 
   };
 
-  const resp = await fetch(`http://localhost:8080/usuarios/${id}`, {
+  const resp = await fetch(`https://neuronapi-oou1.onrender.com/usuarios/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
     },
     body: JSON.stringify(body),
   });
@@ -98,13 +101,9 @@ export async function atualizarUsuario(id: number, data: AtualizarUsuarioDto) {
 }
 
 export async function deletarUsuario(id: number) {
-  const token = localStorage.getItem("token");
 
-  const resp = await fetch(`http://localhost:8080/usuarios/id/${id}`, {
-    method: "DELETE",
-    headers: {
-      "Authorization": `Bearer ${token}`
-    }
+  const resp = await fetch(`https://neuronapi-oou1.onrender.com/usuarios/id/${id}`, {
+    method: "DELETE"
   });
 
   if (!resp.ok) {

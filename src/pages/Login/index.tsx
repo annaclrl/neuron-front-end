@@ -1,10 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useState } from 'react';
-import type { UsuarioComLogin } from '../../types/usuario';
+import { useEffect, useState } from 'react';
+import type { Usuario, UsuarioComLogin } from '../../types/usuario';
 import Logo from '../../assets/images/logo-neuron.png'
-import { login } from '../../services/authService';
-import { buscarUsuarioPorId } from '../../services/usuarioService';
+import { buscarUsuarioPorId, buscarUsuarios } from '../../services/usuarioService';
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<UsuarioComLogin>();
@@ -13,8 +12,26 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState('');
+  const [usuarios, setUsuarios] = useState<Usuario[]>([]);
 
   const message = location.state?.message;
+
+  useEffect(() => {
+    const buscarTodosUsuarios = async () => {
+        try {
+            const response = await buscarUsuarios();
+
+            setUsuarios(response);
+
+            console.log("Usuários carregados:", response);
+        } catch (error) {
+            console.error("Erro ao buscar usuários", error);
+        }
+        
+    };
+
+    buscarTodosUsuarios();
+  }, []);
 
   const onSubmit = async (data: UsuarioComLogin) => {
     setIsLoading(true);
@@ -22,11 +39,13 @@ const Login = () => {
 
     try {
 
-      await login(data);
-      const idUsuario = localStorage.getItem("userId");
-      console.log("ID do usuário:", idUsuario);
+      const usuarioEncontrado = usuarios.find(
+        (u) => u.email === data.email && u.senha === data.senha
+      );
 
-      const usuarioLogado = await buscarUsuarioPorId(Number(idUsuario));
+      localStorage.setItem("userId", String(usuarioEncontrado?.id));
+
+      const usuarioLogado = await buscarUsuarioPorId(Number(usuarioEncontrado?.id));
       console.log("Usuário logado:", usuarioLogado);
 
       const tipoMap: Record<number, string> = {

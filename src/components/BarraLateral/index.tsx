@@ -32,6 +32,7 @@ const BarraLateral = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("usuario_logado");
+    localStorage.removeItem("userId");
     navigate("/login");
   };
 

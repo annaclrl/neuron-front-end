@@ -45,7 +45,6 @@ const DadosConta = () => {
 
     alert("Dados atualizados com sucesso! Faça o login novamente com os dados atualizados.");
 
-    localStorage.removeItem("token");
     localStorage.removeItem("userId");
 
     navigate("/login");

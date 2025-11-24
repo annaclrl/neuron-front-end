@@ -1,7 +1,7 @@
 import type { FormInputs } from "../types/formularioEmocao";
 
-const API_REGISTRO = "http://localhost:8080/registro-emocao";
-const API_RESPOSTA = "http://localhost:8080/resposta-formulario";
+const API_REGISTRO = "https://neuronapi-oou1.onrender.com/registro-emocao";
+const API_RESPOSTA = "https://neuronapi-oou1.onrender.com/resposta-formulario";
 
 export function formatarDataISO(data?: string): string {
   return data
