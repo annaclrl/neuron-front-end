@@ -22,7 +22,7 @@ export async function cadastrarUsuario(data: CadastroForm): Promise<void> {
 
   console.log("DTO enviado:", dto);
   try {
-    response = await fetch("https://neuronapi-oou1.onrender.com/usuarios", {
+    response = await fetch("https://neuronapi-oou1.onrender.com/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(dto),

@@ -61,7 +61,8 @@ npm run dev
 ---
 
 ## 🖥️ Como Usar
-- Acesse 
+
+- Acesse [https://neuron-front-end-nine.vercel.app/]
 - Clique em Começar Agora para criar uma conta
 - Faça login e registre seu humor diário
 - Visualize dicas personalizadas e histórico de emoções
@@ -151,8 +152,7 @@ juntos-pela-saude-front-end/
 
 | Módulo | Método | Endpoint | Descrição |
 |--------|---------|-----------|-------------|
-| Auth | POST | `/auth/login` | Login |
-| Auth | POST | `/auth/register` | Criar usuário |
+| Usuário | POST | `/usuarios` | Criar usuário |
 | Usuário | GET | `/usuarios/{id}` | Buscar usuário |
 | Usuário | PUT | `/usuarios/{id}` | Atualizar |
 | Usuário | DELETE | `/usuarios/id/{id}` | Desativar |
@@ -177,19 +177,19 @@ juntos-pela-saude-front-end/
 ## 🖼️ Screenshots
 
 - **Página Inicial**
-![alt text](image.png)
+![alt text](./src/assets/images/image.png)
 ---
 - **Formulário**
-![alt text](image-1.png)
+![alt text](./src/assets/images/image-1.png)
 ---
 - **Histórico de Emoções**
-![alt text](image-2.png)
+![alt text](./src/assets/images/image-2.png)
 ---
 - **Dashboard Gestor**
-![alt text](image-4.png)
+![alt text](./src/assets/images/image-4.png)
 ---
 - **Dashboard RH**
-![alt text](image-3.png)
+![alt text](./src/assets/images/image-3.png)
 
 
 ## 🧑‍💻 GitHub
