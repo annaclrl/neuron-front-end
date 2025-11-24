@@ -99,8 +99,6 @@ juntos-pela-saude-front-end/
 │   │   ├── formularioEmocao.ts
 │   │   ├── integrantes.ts
 │   │   └── perguntasFAQ.ts
-│   ├── hooks 
-│   │   ├── useAuthRedirect.ts
 │   ├── pages                   
 │   │   ├── Cadastro
 │   │   │    └── index.tsx
@@ -126,8 +124,7 @@ juntos-pela-saude-front-end/
 │   │        └── index.tsx 
 │   ├── routes
 │   │   └── AppRoutes.tsx        
-│   ├── services
-│   │   └── authService.ts       
+│   ├── services      
 │   │   └── formularioService.ts     
 │   │   └── ususarioService.ts  
 │   ├── types                   
